@@ -2,7 +2,7 @@
 Bản tham khảo cho **nhóm 4 người** (người dùng xác nhận giảng viên đã chấp thuận).
 Đã triển khai UI, state machine, SQLite, ngân hàng 10 chủ đề, skill, tools, adapter
 native tool calling, RAG index, validator, eval runner và cấu hình CI.
-**Offline chạy được; live scoring và benchmark giáo viên chưa được xác minh.**
+**Offline và luồng chấm live đã chạy; chưa có benchmark giáo viên đủ điều kiện đo accuracy.**
 Người dùng đã yêu cầu tạo PR để review, không tự merge. Không có key trong repo.
 
 ## Cài và chạy offline
@@ -27,6 +27,7 @@ Không đưa app này lên Internet cho người dùng thật nếu chưa bổ s
 .venv/bin/python -m scripts.smoke
 ```
 Eval ghi `runtime/evals/<run_id>/report.json`, `cases.csv`, JUnit; giữ exit code lỗi.
+Muốn kiểm chứng cả model thật và UI: thêm `--live` (có phí API).
 Smoke chạy trọn 11 câu qua agent và SQLite với **đồng hồ kiểm thử được tiêm**,
 không bỏ chờ 60 giây trong UI thật. `--real-time` dùng thời gian thật.
 [Validation](docs/validation.md) ghi kết quả thực và giới hạn.
@@ -46,28 +47,47 @@ Trong cloud, `OPENAI_*` là tên dành riêng của nền tảng; dùng secret *
 Key từng lộ trong chat cần thu hồi/thay mới, không tái dùng.
 Chỉ gửi key tới endpoint HTTPS bạn tin tưởng. `.env.example` không chứa key.
 
-1. Kiểm điều khoản nguồn chính thức, tải PDF nếu được phép:
-   `.venv/bin/python -m scripts.ingest_descriptors --download`.
-2. Chunk thủ công theo **criterion × band** từ PDF chính thức, review nội dung;
-   tạo JSON như [hướng dẫn RAG](data/descriptors/README.md), không tự bịa descriptors.
-3. Import cục bộ: `.venv/bin/python -m scripts.ingest_descriptors --input /path/to/reviewed.json --permissions-reviewed`.
-4. Kiểm native tool calling (lệnh này gọi API có phí):
-   `.venv/bin/python -m scripts.check_provider`.
-5. Chạy app, chọn Live và làm phiên mới. Không suy ra model có tool calling chỉ từ tên.
+1. Đọc [nguồn và điều khoản](docs/benchmark_sources.md). Với việc học cá nhân phi thương mại
+   có ghi công đã được người dùng yêu cầu, chuẩn bị rubric **ngoài Git**:
+   ```bash
+   .venv/bin/python -m scripts.ingest_descriptors --download
+   .venv/bin/python -m scripts.extract_descriptors --personal-noncommercial
+   ```
+   Parser hỗ trợ PDF chính thức có lớp chữ 4 trang, không đoán nội dung từ scan;
+   36 chunk criterion × band 1–9 (text chỉ dùng 3 tiêu chí). Giữ nguyên PDF gốc/notice.
+2. Kiểm native protocol: `.venv/bin/python -m scripts.check_provider`.
+3. Chạy kiểm chứng đầy đủ (gọi API có phí):
+   ```bash
+   .venv/bin/python -m evals.run --all --live --label phase1
+   ```
+   Bao gồm tests offline, 3 ca live (normal/short/injection), UI live đi hết 11 câu.
+   Đồng hồ Part 2 được tiêm trong test; UI thông thường vẫn chờ đủ 60 giây.
+4. Chạy app, chọn Live. `codestral-2508` đã kiểm native tool roundtrip và chấm có RAG.
+   Controller buộc chạy các prerequisite tool theo thứ tự rồi mới nhận JSON chấm;
+   không tuyên bố model tự chọn tool luôn đúng. Offset evidence do code tính từ quote.
 
-Hiện tải `ielts.org` bị proxy trả 403; cấu hình domain đã lưu draft, chưa chứng minh
-đã áp dụng. Thiếu official chunks hoặc key thì Live báo lỗi, không dùng rubric giả thay thế.
-RAG dùng hashing embeddings/ngram + sparse vector index trong bộ nhớ,
-metadata filter trước cosine search; đây là thiết kế đơn giản, chất lượng retrieval chưa benchmark.
-Tham khảo benchmark trong [evals](evals/README.md). Không lấy fixture làm điểm giáo viên.
+[Hồ sơ nguồn PDF người dùng cung cấp](docs/references/IELTS_Speaking_Part_1_2_3_Nguon_Cho_Codex.pdf)
+và [manifest](data/sources/manifest.json) có trong repo; **PDF rubric đầy đủ và transcript
+nguồn chỉ ở runtime/** do điều khoản hạn chế đăng lại. Nguồn đã tải được, không còn blocker mạng.
+12 excerpt có published performance band; **không có nhãn riêng ba tiêu chí text**,
+nên số mẫu accuracy đủ điều kiện hiện là **0**. Không dùng điểm LLM hay band video để lấp chỗ trống.
+Chấm một excerpt mà không sinh phần thiếu:
+```bash
+.venv/bin/python -m scripts.import_official_samples --personal-noncommercial
+.venv/bin/python -m scripts.assess_transcript --input runtime/sources/official-01.json --usage-permitted
+```
+Lệnh chấm trên gọi API có phí, input không có gold/examiner comments; output nêu scope Part.
+Xem [checklist Phase 1](docs/phase1_checklist.md), [kết quả thật](docs/validation.md)
+và [regression native tool policy](docs/live_regression.md). Chưa đạt/không đo được accuracy
+không được thay bằng số lượng test pass.
 
 ## Cấu trúc và phân công
 | Người | Phần đã có | Cần nhóm review/bổ sung |
 |---|---|---|
 | TV1 | app.py, tiến trình, timer, resume, kết quả và xoá dữ liệu | UX, tên thành viên |
-| TV2 | examiner_agent, provider, tools, rag, 2 skill | Model thật, official descriptors, chất lượng câu hỏi/chấm |
+| TV2 | examiner_agent, provider, tools, rag, 2 skill | Review chất lượng chấm; bổ sung nhãn giáo viên |
 | TV3 | storage, bank, 10 bộ Speaking, 5 learner giả lập trong UI | Review ngân hàng AI-generated, license, backup policy |
-| TV4 | tests, evals, CI, docs, schema JSON | Benchmark giáo viên, live integration, CI trên GitHub, video/báo cáo |
+| TV4 | tests, evals, CI, docs, schema JSON | Benchmark giáo viên, tên nhóm/chủ UC, video/báo cáo |
 
 [Contract](docs/contracts.md) · [Python types](src/contracts.py) · [JSON schemas](schemas/)
 · [Yêu cầu gốc / đề xuất](docs/requirements.md) · [Bàn giao](docs/implementation.md)

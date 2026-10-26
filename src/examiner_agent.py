@@ -45,8 +45,9 @@ class ExaminerAgent:
           'timestamp':iso(self.clock()),'event_type':event_type,'name':name,
           'input_refs':metrics.get('input_refs',[]),'output_refs':metrics.get('output_refs',[]),'duration_ms':metrics.get('duration_ms',0),
           'token_count':metrics.get('token_count'),'estimated_cost':None,'currency':None,
-          'error_code':metrics.get('error_code'),'model':getattr(self.provider,'model','offline-no-grading'),
-          'prompt_version':'speaking-v1','data_version':'bank-v1',
+          'error_code':metrics.get('error_code'),'arguments':metrics.get('arguments',{}),
+          'succeeded':metrics.get('succeeded'),'model':getattr(self.provider,'model','offline-no-grading'),
+          'prompt_version':'speaking-v2','data_version':'bank-v1',
           'descriptor_version':','.join(sorted({c['version'] for c in self.descriptors.chunks})) if self.descriptors else 'unavailable'}
         self.storage.trace(event,context=context_for(state))
 
@@ -170,11 +171,40 @@ class ExaminerAgent:
         self._trace(reply['state'],'node','assessment_complete',duration_ms=int((time.monotonic()-start)*1000))
         return reply
 
+    def import_transcript(self, *, learner_id, turns, part_scope, source_sample_id):
+        """Import exactly the provided turns; never invent missing Parts or gold.
+        Caller must establish permissions. Only fictional demo actors own runtime imports.
+        """
+        if learner_id not in {f'demo-{i}' for i in range(1,6)}:
+            raise ValidationError('Only fictional demo actors are supported')
+        if not turns or not part_scope or not set(part_scope)<={'part1','part2','part3'}:
+            raise ValidationError('Transcript and explicit part scope are required')
+        clean=[]
+        for turn in turns:
+            if set(turn)!={'role','part','text'} or turn['role'] not in {'examiner','candidate'} or turn['part'] not in part_scope or not isinstance(turn['text'],str) or not turn['text'].strip():
+                raise ValidationError('Invalid transcript turn or scope')
+            clean.append({**turn,'turn_id':uid()})
+        if not any(t['role']=='candidate' for t in clean):
+            raise ValidationError('No candidate content')
+        now=iso(self.clock())
+        state={'schema_version':'0.1','session_id':uid(),'learner_id':learner_id,'run_id':uid(),'revision':0,
+          'mode':'text','status':'awaiting_assessment','part':clean[-1]['part'],'bank_item_id':'transcript-import',
+          'asked_questions':[{'question_id':t['turn_id'],'part':t['part'],'text':t['text'],'refers_to_point_ids':[]}
+                             for t in clean if t['role']=='examiner'],
+          'candidate_points':[],'turns':clean,'elapsed_seconds':0,'preparation_started_at':None,
+          'preparation_deadline_at':None,'created_at':now,'updated_at':now,
+          'part_scope':list(part_scope),'source_sample_id':source_sample_id}
+        reply=self.storage.commit_reply(self._reply(state),expected_revision=None,context=context_for(state))
+        self._trace(reply['state'],'node','transcript_import')
+        return reply
+
     def _assessment(self,state):
         base={'schema_version':'0.1','assessment_id':uid(),'session_id':state['session_id'],
           'run_id':state['run_id'],'overall_basis':'three_text_criteria','disclaimer':DISCLAIMER,
           'limitations':['Text cannot assess pronunciation or acoustic fluency.','Three-criterion overall is a practice proxy, not an official IELTS Speaking score.'],
           'suggestions':[]}
+        if state.get('part_scope'):
+            base['limitations'].append('Transcript-only scope: '+', '.join(state['part_scope'])+'; missing Parts were not generated. Published performance labels were not supplied to the model.')
         if self.provider is None:
             base.update(criteria=[{'criterion':c,'status':'not_assessed' if c=='pronunciation' else 'insufficient_evidence',
               'band':None,'evidence':[],'descriptor_refs':[],
@@ -192,20 +222,24 @@ class ExaminerAgent:
             retrieved.update({c['chunk_id']:c for c in chunks})
             self._trace(state,'retrieval','speaking_descriptors',output_refs=[c['chunk_id'] for c in chunks])
             return chunks
-        def save_attempt():
+        def save_attempt(expected_revision=None):
             nonlocal saved
             # The final answer was committed before assessment; verify the real
             # database checkpoint as the model's read/write tool boundary.
+            if expected_revision is not None and expected_revision!=state['revision']:
+                raise ValidationError('Untrusted revision rejected')
             result=self.storage.checkpoint(context=context_for(state),expected_revision=state['revision'])
             saved=True
             return result
         tools=[function_tool('retrieve_descriptors','Retrieve official Speaking band descriptors before scoring',
                  {'criterion':{'type':'string','enum':list(CRITERIA[:3])},'top_k':{'type':'integer','minimum':1,'maximum':8}},['criterion']),
-               function_tool('save_attempt','Persist the current trusted attempt checkpoint to SQLite; no model-supplied state is accepted',{},[])]
+               function_tool('save_attempt','Persist the current trusted attempt checkpoint to SQLite; no model-supplied state is accepted',{'expected_revision':{'type':'integer'}},['expected_revision'])]
         task={'operation':'assess_text_speaking','required_tools':['retrieve_descriptors for each text criterion','save_attempt'],
+          'tool_sequence':[{'name':'retrieve_descriptors','arguments':{'criterion':c,'top_k':8}} for c in CRITERIA[:3]]+[{'name':'save_attempt','arguments':{'expected_revision':state['revision']}}],
           'candidate_data':state['turns'],'output_contract':{'criteria':[{'criterion':'one of fluency_coherence, lexical_resource, grammatical_range_accuracy',
-          'status':'assessed or insufficient_evidence','band':'0..9 step .5 or null','evidence':[{'turn_id':'candidate turn ID','quote':'verbatim','start_char':0,'end_char':1}],
+          'status':'assessed or insufficient_evidence','band':'0..9 step .5 or null','evidence':[{'turn_id':'candidate turn ID','quote':'short verbatim substring; character offsets are computed by code'}],
           'descriptor_refs':['retrieved chunk ID'],'comment':'specific feedback'}],'suggestions':['actionable advice']},
+          'scope':state.get('part_scope',['part1','part2','part3']),
           'rules':'Return exactly three text criteria. Insufficient data means null, never invented evidence. Never assess pronunciation.'}
         last_error=None
         for attempt in range(3):
@@ -216,6 +250,15 @@ class ExaminerAgent:
                     raise OutputValidationError('Required native tool calls were not executed')
                 if len(output.get('criteria',[]))!=3:
                     raise OutputValidationError('Expected three text criteria')
+                candidate_turns={t['turn_id']:t['text'] for t in state['turns'] if t['role']=='candidate'}
+                for criterion in output['criteria']:
+                    for evidence in criterion.get('evidence',[]):
+                        text=candidate_turns.get(evidence.get('turn_id'))
+                        quote=evidence.get('quote')
+                        if text is None or not isinstance(quote,str) or not quote or quote not in text:
+                            raise OutputValidationError('Evidence must be a verbatim substring of its candidate turn')
+                        evidence['start_char']=text.index(quote)
+                        evidence['end_char']=evidence['start_char']+len(quote)
                 base['criteria']=output['criteria']+[{'criterion':'pronunciation','status':'not_assessed','band':None,'evidence':[],
                   'descriptor_refs':[],'comment':'Not assessed: no audio in text mode.'}]
                 base['suggestions']=output.get('suggestions',[])

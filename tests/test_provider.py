@@ -41,3 +41,38 @@ def test_malformed_json_rejected():
     p,_=provider_for([NS(tool_calls=None,content='not json')])
     with pytest.raises(OutputValidationError):
         p.run({})
+
+
+def test_scheduled_native_call_uses_forced_choice():
+    class ScheduledMessage(ToolMessage):
+        def __init__(self):
+            super().__init__('lookup')
+            self.tool_calls[0].function.arguments='{"criterion":"lexical_resource"}'
+        def model_dump(self,**kwargs):
+            data=super().model_dump(**kwargs)
+            data['tool_calls'][0]['function']['arguments']=self.tool_calls[0].function.arguments
+            return data
+    p,calls=provider_for([ScheduledMessage(),NS(tool_calls=None,content='{"ok":true}')])
+    invoked=[]
+    result,used=p.run({'tool_sequence':[{'name':'lookup','arguments':{'criterion':'lexical_resource'}}]},
+        tools=[{'type':'function'}],handlers={'lookup':lambda criterion:invoked.append(criterion) or {'chunks':[]}})
+    assert invoked==['lexical_resource'] and result=={'ok':True}
+    assert calls[0]['tool_choice']=={'type':'function','function':{'name':'lookup'}}
+    assert calls[1]['response_format']=={'type':'json_object'}
+    assert 'tools' not in calls[1]
+
+
+def test_required_tools_cannot_be_skipped_by_json_answer():
+    p,_=provider_for([NS(tool_calls=None,content='{"ok":true}')])
+    with pytest.raises(OutputValidationError):
+        p.run({'tool_sequence':[{'name':'lookup','arguments':{}}]},tools=[{'type':'function'}],handlers={'lookup':lambda:{}})
+
+
+def test_tool_trace_records_safe_arguments_and_result_refs():
+    p,_=provider_for([ToolMessage(),NS(tool_calls=None,content='{"ok":true}')])
+    events=[]
+    p.run({},tools=[{'type':'function'}],handlers={'lookup':lambda:[{'chunk_id':'test-ref-only'}]},
+          on_event=lambda kind,name,**metrics:events.append((kind,name,metrics)))
+    tool=next(e[2] for e in events if e[0]=='tool')
+    assert tool['arguments']=={} and tool['output_refs']==['test-ref-only']
+    assert tool['succeeded'] and tool['duration_ms']>=0

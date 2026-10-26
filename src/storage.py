@@ -182,7 +182,7 @@ class Storage:
         # All event values are references/metrics, never raw model or candidate content.
         allowed = {'event_id','run_id','session_id','timestamp','event_type','name',
                    'input_refs','output_refs','duration_ms','token_count','estimated_cost',
-                   'currency','error_code','model','prompt_version','data_version','descriptor_version'}
+                   'currency','error_code','model','prompt_version','data_version','descriptor_version','arguments','succeeded'}
         if set(event) - allowed:
             raise ValidationError('Trace contains unsupported fields')
         with self.connect() as db:

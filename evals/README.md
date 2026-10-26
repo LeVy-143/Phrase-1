@@ -19,7 +19,7 @@ Dùng transcript giả lập được giáo viên chấm, hoặc consent và lư
 Predictions JSON array: id, run_id, model, prompt_version, data_version,
 descriptor_version, criteria cùng 3 trường (điểm model thật, có trace tương ứng).
 Không gửi teacher scores vào prompt model. Chấm qua Live trước, xuất điểm đã validate;
-hiện chưa có batch transcript-to-prediction importer.
+đã có scripts.assess_transcript cho input theo scope Part, không tự sinh phần thiếu.
 ```bash
 .venv/bin/python -m evals.run --all --gold /private/gold.json --predictions /private/predictions.json --label live-benchmark
 ```
@@ -31,5 +31,12 @@ không trùng nghĩa và chất lượng follow-up ở nhiều phiên (≥80%), 
 
 ## Regression
 docs/validation.md ghi các lần chạy thật và bản sửa timer. Đây là regression hành vi;
-chưa có so sánh accuracy model trước/sau cải tiến vì chưa có key/descriptors/teacher gold.
+đã có live regression native tool policy tại docs/live_regression.md; chưa có so sánh accuracy
+model vì thiếu teacher gold, dù key và official descriptors đã hoạt động.
 Yêu cầu regression chất lượng theo đề tài vẫn còn, không thay bằng số liệu offline.
+
+## Live kiểm chứng (có phí)
+`python -m evals.run --all --live` chạy offline tests rồi 3 scenario model thật và full UI.
+Raw source transcripts và rubric không vào Git. docs/evidence và docs/traces chứa kết quả/refs
+được phép chia sẻ, không có key hay raw transcript người thật.
+`python -m evals.source_inventory` kiểm số mẫu đủ nhãn, hiện là 0, không có gold giả.

@@ -1,0 +1,31 @@
+{
+  "run_id": "b2b71ae8-0cec-45a0-a193-0a30b3013b18",
+  "session_id": "62e098fc-3de0-462d-be3c-0e722dfb0395",
+  "label": "final-trace-metadata",
+  "status": "completed",
+  "model": "codestral-2508",
+  "prompt_version": "speaking-v2",
+  "data_version": "fictional-live-smoke-v1",
+  "descriptor_version": "official-sha256:eab717cea3230c2bc9a0888655518bd8f4fd9ca7f8b2f4bdef231e42229cb6c9",
+  "questions": 11,
+  "native_tool_names": [
+    "retrieve_descriptors",
+    "save_attempt"
+  ],
+  "model_calls": 5,
+  "tokens": 39519,
+  "estimated_cost": null,
+  "latency_seconds": 32.756,
+  "overall_band": 7.0,
+  "pronunciation": {
+    "criterion": "pronunciation",
+    "status": "not_assessed",
+    "band": null,
+    "evidence": [],
+    "descriptor_refs": [],
+    "comment": "Not assessed: no audio in text mode."
+  },
+  "disclaimer": "Điểm ước lượng do AI chấm, chỉ dùng để luyện tập, không thay thế điểm thi chính thức",
+  "accuracy_benchmark": false,
+  "clock": "injected for Part 2 only; live model calls are real"
+}

@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "run_id": "b1e666d9-d2ab-4373-9af8-b7eddcc60973",
+  "mode": "live-UI",
+  "questions": 11,
+  "overall_proxy": 7.0,
+  "model_calls": 5,
+  "accuracy_benchmark": false,
+  "disclaimer": "Điểm ước lượng do AI chấm, chỉ dùng để luyện tập, không thay thế điểm thi chính thức",
+  "limitations": [
+    "Fictional candidate; injected Part 2 clock; real model/RAG/SQLite."
+  ]
+}

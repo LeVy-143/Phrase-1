@@ -206,6 +206,22 @@
     "updated_at": {
       "title": "Updated At",
       "type": "string"
+    },
+    "part_scope": {
+      "items": {
+        "enum": [
+          "part1",
+          "part2",
+          "part3"
+        ],
+        "type": "string"
+      },
+      "title": "Part Scope",
+      "type": "array"
+    },
+    "source_sample_id": {
+      "title": "Source Sample Id",
+      "type": "string"
     }
   },
   "required": [

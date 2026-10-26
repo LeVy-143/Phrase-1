@@ -3,7 +3,7 @@ name = "ielts-learning-agent-reference"
 version = "0.2.0"
 description = "UC-03 text Speaking reference implementation for Phase 1"
 requires-python = ">=3.12"
-dependencies = ["streamlit>=1.40,<2", "openai>=1.50,<3", "scikit-learn>=1.5,<2", "pydantic>=2,<3"]
+dependencies = ["streamlit>=1.40,<2", "openai>=1.50,<3", "scikit-learn>=1.5,<2", "pydantic>=2,<3", "pypdf>=5,<7"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
