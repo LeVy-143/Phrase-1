@@ -1,0 +1,232 @@
+{
+  "$defs": {
+    "AskedQuestion": {
+      "properties": {
+        "question_id": {
+          "title": "Question Id",
+          "type": "string"
+        },
+        "part": {
+          "enum": [
+            "part1",
+            "part2",
+            "part3"
+          ],
+          "title": "Part",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "refers_to_point_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Refers To Point Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "question_id",
+        "part",
+        "text",
+        "refers_to_point_ids"
+      ],
+      "title": "AskedQuestion",
+      "type": "object"
+    },
+    "CandidatePoint": {
+      "properties": {
+        "point_id": {
+          "title": "Point Id",
+          "type": "string"
+        },
+        "turn_id": {
+          "title": "Turn Id",
+          "type": "string"
+        },
+        "summary": {
+          "title": "Summary",
+          "type": "string"
+        },
+        "quote": {
+          "title": "Quote",
+          "type": "string"
+        }
+      },
+      "required": [
+        "point_id",
+        "turn_id",
+        "summary",
+        "quote"
+      ],
+      "title": "CandidatePoint",
+      "type": "object"
+    },
+    "Turn": {
+      "properties": {
+        "turn_id": {
+          "title": "Turn Id",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "examiner",
+            "candidate"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "part": {
+          "enum": [
+            "part1",
+            "part2",
+            "part3"
+          ],
+          "title": "Part",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "turn_id",
+        "role",
+        "part",
+        "text"
+      ],
+      "title": "Turn",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "schema_version": {
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "session_id": {
+      "title": "Session Id",
+      "type": "string"
+    },
+    "learner_id": {
+      "title": "Learner Id",
+      "type": "string"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "revision": {
+      "title": "Revision",
+      "type": "integer"
+    },
+    "mode": {
+      "const": "text",
+      "title": "Mode",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "preparing",
+        "awaiting_assessment",
+        "completed",
+        "failed"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "part": {
+      "enum": [
+        "part1",
+        "part2",
+        "part3"
+      ],
+      "title": "Part",
+      "type": "string"
+    },
+    "bank_item_id": {
+      "title": "Bank Item Id",
+      "type": "string"
+    },
+    "asked_questions": {
+      "items": {
+        "$ref": "#/$defs/AskedQuestion"
+      },
+      "title": "Asked Questions",
+      "type": "array"
+    },
+    "candidate_points": {
+      "items": {
+        "$ref": "#/$defs/CandidatePoint"
+      },
+      "title": "Candidate Points",
+      "type": "array"
+    },
+    "turns": {
+      "items": {
+        "$ref": "#/$defs/Turn"
+      },
+      "title": "Turns",
+      "type": "array"
+    },
+    "elapsed_seconds": {
+      "title": "Elapsed Seconds",
+      "type": "integer"
+    },
+    "preparation_started_at": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Preparation Started At"
+    },
+    "preparation_deadline_at": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Preparation Deadline At"
+    },
+    "created_at": {
+      "title": "Created At",
+      "type": "string"
+    },
+    "updated_at": {
+      "title": "Updated At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "session_id",
+    "learner_id",
+    "run_id",
+    "revision",
+    "mode",
+    "status",
+    "part",
+    "bank_item_id",
+    "asked_questions",
+    "candidate_points",
+    "turns",
+    "elapsed_seconds",
+    "preparation_started_at",
+    "preparation_deadline_at",
+    "created_at",
+    "updated_at"
+  ],
+  "title": "SessionState",
+  "type": "object"
+}
