@@ -63,3 +63,10 @@ Ngân hàng/benchmark các UC khác vẫn là backlog toàn đồ án, không ng
 Python đã chốt 3.12 cho lockfile kiểm thực tế. Model calls tối đa 8 mỗi lần sinh output,
 cho phép tối đa 2 lần sửa schema (tối đa 24 calls trước retry transport); SDK retry tối đa 2
 cho lỗi transport/status transient. Không có tool shell hoặc quyền model ghi state tùy ý.
+
+## Cập nhật nguồn và kiểm chứng live
+Đã tích hợp hai PDF người dùng bổ sung: hồ sơ nguồn được publish theo yêu cầu; rubric
+đầy đủ giữ runtime do điều khoản S4. Official PDF/native corpus, API key, native tool loop,
+UI live và regression hành vi đã chạy. Không còn blocker key/mạng/descriptors.
+Vẫn thiếu teacher text labels: 15 metadata/12 published performance bands nhưng 0 gold
+text đủ điều kiện. Checklist Phase 1 và ranh giới với toàn rubric tại phase1_checklist.md.

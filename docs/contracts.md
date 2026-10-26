@@ -1,4 +1,4 @@
-# Contract v0.2 — implementation reference
+# Contract v0.3 — implementation reference
 Đây là lựa chọn thiết kế của bản tham khảo, không thay yêu cầu gốc ở requirements.md.
 Tên trường ở `src/contracts.py`, JSON schemas ở `schemas/`; JSON payload giữ schema_version="0.1"
 vì chưa có thay đổi phá tương thích. Pydantic kiểm kiểu state/result; domain validators
@@ -54,7 +54,7 @@ BankItem metadata và verification ghi rõ AI review, human review pending.
 Model assessment có hai tool allowlisted:
 - retrieve_descriptors(criterion,top_k=8): chỉ 3 tiêu chí text Speaking, top_k 1–8;
   DescriptorIndex lọc metadata trước cosine retrieval, lưu snapshots/ref IDs.
-- save_attempt(): không nhận state từ model; ghi checkpoint tin cậy qua SQLite,
+- save_attempt(expected_revision): native tool chỉ nhận revision đúng với checkpoint hiện tại, không nhận state từ model; ghi checkpoint tin cậy qua SQLite,
   trả persisted/revision/session_id chỉ khi write thành công.
 Ngoài ra compute_band và validate_assessment luôn chạy bằng code sau model output,
 model không được tự tính overall hoặc nộp band Pronunciation.
@@ -63,6 +63,9 @@ ChatProvider.run(task,tools,handlers,on_event) thực hiện native tool-call �
 message role=tool → model tiếp tục, tối đa 8 model calls/attempt. Output sai schema được
 sửa tối đa 2 lần (tối đa 24 model calls; SDK retry transport transient tối đa 2).
 Lỗi credentials/capability được báo ProviderError, không fallback sang model giả.
+Task tool_sequence là lịch prerequisite do code tin cậy tạo: ba lượt retrieval (mỗi tiêu chí),
+một checkpoint rồi một final JSON. Mỗi prerequisite dùng forced native tool choice;
+model không được bỏ qua hoặc tự đổi arguments. Không suy ra auto tool selection đáng tin cậy.
 
 ## SpeakingAssessment
 Exactly 4 criterion: fluency_coherence, lexical_resource, grammatical_range_accuracy,
@@ -72,7 +75,8 @@ Pronunciation luôn not_assessed, band=null, evidence=[], descriptor_refs=[].
 Overall do code: trung bình 3 tiêu chí, Decimal half-up đến .5;
 thiếu bất kỳ điểm nào → null. overall_basis=three_text_criteria, không là điểm thi chính thức.
 Evidence={turn_id,quote,start_char,end_char}, phải trỏ candidate turn và đúng
-Turn.text[start_char:end_char], 0<=start<end<=len(text). Refs thuộc retrieval của run,
+Turn.text[start_char:end_char], 0<=start<end<=len(text). Model trả turn_id/quote; code tính
+offset bằng lần xuất hiện đầu tiên, không sửa quote sai để cho qua. Refs thuộc retrieval của run,
 test_part=speaking, criterion đúng. Disclaimer bắt buộc, limitations phải nêu giới hạn text.
 Offline trả mọi band null và nêu không chấm model; fixture chỉ ở tests.
 
@@ -81,6 +85,14 @@ TraceEvent lưu run/session/event IDs, timestamp, loại, tên, input_refs/outpu
 duration_ms, token_count, estimated_cost/currency, error_code và version metadata.
 Không raw transcript, prompt hoặc key; input/output nhạy cảm được đại diện bằng refs.
 Provider có token usage thì ghi thật, thiếu để null; chi phí chưa có giá xác minh để null.
+Tool trace còn ghi arguments hợp lệ, output_refs, succeeded và duration_ms; không sao chép
+raw transcript/rubric vào log. Chi phí chưa có bảng giá xác minh vẫn là null.
+
+Standalone: import_transcript(learner_id, turns, part_scope, source_sample_id) nhận đúng
+turns với role/part/text và lưu awaiting_assessment; không yêu cầu hay tự sinh đủ 11 câu.
+part_scope và source_sample_id là trường optional mới của state. Kết quả có limitation
+nêu scope, không là band đầy đủ; CLI reject field gold/comment để tránh leakage.
+
 Lỗi: ValidationError, OutputValidationError, NotFound, AccessDenied,
 RevisionConflict, IdempotencyConflict, DescriptorUnavailable, ProviderError, StorageError.
 UI bắt domain errors, hiển thị thông báo không chứa response body/key; không báo pass giả.

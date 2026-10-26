@@ -41,6 +41,8 @@ class SessionState(TypedDict):
     preparation_deadline_at: str | None
     created_at: str
     updated_at: str
+    part_scope: NotRequired[list[Part]]
+    source_sample_id: NotRequired[str]
 
 class Evidence(TypedDict):
     turn_id: str
@@ -118,3 +120,5 @@ class TraceEvent(TypedDict):
     estimated_cost: float | None
     currency: str | None
     error_code: str | None
+    arguments: NotRequired[dict[str, str | int]]
+    succeeded: NotRequired[bool | None]

@@ -9,7 +9,7 @@ from pathlib import Path
 import urllib.request
 from urllib.parse import urlparse
 
-OFFICIAL_URL = 'https://ielts.org/cdn/Guides/ielts-speaking-band-descriptors.pdf'
+OFFICIAL_URL = 'https://ielts.org/cdn/ielts-downloadable-assets/ielts-guidance-and-support/ielts-guides/ielts-speaking-band-descriptors.pdf'
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)

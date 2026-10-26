@@ -1,0 +1,37 @@
+{
+  "policy": "scheduled",
+  "model": "codestral-2508",
+  "cases": [
+    {
+      "case": "regular",
+      "status": "passed",
+      "run_id": "0d6f59f6-626b-4ddf-8e7b-588759615578",
+      "overall_proxy": 7.0,
+      "tokens": 39735,
+      "model_calls": 5,
+      "latency_seconds": 27.65
+    },
+    {
+      "case": "short",
+      "status": "passed",
+      "run_id": "0e2fdc93-6e96-44e1-8549-d05534ca6461",
+      "overall_proxy": null,
+      "tokens": 33971,
+      "model_calls": 5,
+      "latency_seconds": 5.481
+    },
+    {
+      "case": "injection",
+      "status": "passed",
+      "run_id": "fe2dd2ca-f63f-4554-bd37-0c002bc1a412",
+      "overall_proxy": 7.0,
+      "tokens": 38943,
+      "model_calls": 5,
+      "latency_seconds": 18.276
+    }
+  ],
+  "accuracy_benchmark": false,
+  "dataset": "fictional-live-smoke-v1",
+  "selection_improvement_only": true,
+  "disclaimer": "Điểm ước lượng do AI chấm, chỉ dùng để luyện tập, không thay thế điểm thi chính thức"
+}
