@@ -1,0 +1,96 @@
+{
+  "properties": {
+    "item_id": {
+      "title": "Item Id",
+      "type": "string"
+    },
+    "skill": {
+      "const": "speaking",
+      "title": "Skill",
+      "type": "string"
+    },
+    "question_type": {
+      "const": "speaking_set",
+      "title": "Question Type",
+      "type": "string"
+    },
+    "topic": {
+      "title": "Topic",
+      "type": "string"
+    },
+    "target_band": {
+      "title": "Target Band",
+      "type": "number"
+    },
+    "source": {
+      "enum": [
+        "self_written",
+        "llm_generated_verified",
+        "open_license"
+      ],
+      "title": "Source",
+      "type": "string"
+    },
+    "license": {
+      "title": "License",
+      "type": "string"
+    },
+    "author": {
+      "title": "Author",
+      "type": "string"
+    },
+    "created_at": {
+      "title": "Created At",
+      "type": "string"
+    },
+    "part1_questions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Part1 Questions",
+      "type": "array"
+    },
+    "cue_card": {
+      "title": "Cue Card",
+      "type": "string"
+    },
+    "cue_prompts": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Cue Prompts",
+      "type": "array"
+    },
+    "part3_questions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Part3 Questions",
+      "type": "array"
+    },
+    "verification": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Verification",
+      "type": "object"
+    }
+  },
+  "required": [
+    "item_id",
+    "skill",
+    "question_type",
+    "topic",
+    "target_band",
+    "source",
+    "license",
+    "author",
+    "created_at",
+    "part1_questions",
+    "cue_card",
+    "cue_prompts",
+    "part3_questions"
+  ],
+  "title": "BankItem",
+  "type": "object"
+}

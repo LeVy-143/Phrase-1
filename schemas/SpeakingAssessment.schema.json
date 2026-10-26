@@ -1,0 +1,167 @@
+{
+  "$defs": {
+    "CriterionAssessment": {
+      "properties": {
+        "criterion": {
+          "enum": [
+            "fluency_coherence",
+            "lexical_resource",
+            "grammatical_range_accuracy",
+            "pronunciation"
+          ],
+          "title": "Criterion",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "assessed",
+            "not_assessed",
+            "insufficient_evidence"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "band": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Band"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "descriptor_refs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Descriptor Refs",
+          "type": "array"
+        },
+        "comment": {
+          "title": "Comment",
+          "type": "string"
+        }
+      },
+      "required": [
+        "criterion",
+        "status",
+        "band",
+        "evidence",
+        "descriptor_refs",
+        "comment"
+      ],
+      "title": "CriterionAssessment",
+      "type": "object"
+    },
+    "Evidence": {
+      "properties": {
+        "turn_id": {
+          "title": "Turn Id",
+          "type": "string"
+        },
+        "quote": {
+          "title": "Quote",
+          "type": "string"
+        },
+        "start_char": {
+          "title": "Start Char",
+          "type": "integer"
+        },
+        "end_char": {
+          "title": "End Char",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "turn_id",
+        "quote",
+        "start_char",
+        "end_char"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "schema_version": {
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "assessment_id": {
+      "title": "Assessment Id",
+      "type": "string"
+    },
+    "session_id": {
+      "title": "Session Id",
+      "type": "string"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "criteria": {
+      "items": {
+        "$ref": "#/$defs/CriterionAssessment"
+      },
+      "title": "Criteria",
+      "type": "array"
+    },
+    "overall_band": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Overall Band"
+    },
+    "overall_basis": {
+      "const": "three_text_criteria",
+      "title": "Overall Basis",
+      "type": "string"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "suggestions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Suggestions",
+      "type": "array"
+    },
+    "disclaimer": {
+      "title": "Disclaimer",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "assessment_id",
+    "session_id",
+    "run_id",
+    "criteria",
+    "overall_band",
+    "overall_basis",
+    "limitations",
+    "suggestions",
+    "disclaimer"
+  ],
+  "title": "SpeakingAssessment",
+  "type": "object"
+}

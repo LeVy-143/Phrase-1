@@ -1,0 +1,382 @@
+[
+  {
+    "item_id": "sp-public_transport",
+    "skill": "speaking",
+    "question_type": "speaking_set",
+    "topic": "public transport",
+    "target_band": 6.0,
+    "source": "llm_generated_verified",
+    "license": "CC0-1.0",
+    "author": "Codex-assisted reference project; AI generation disclosed",
+    "created_at": "2026-10-26",
+    "part1_questions": [
+      "Where do you usually travel during a normal week?",
+      "How do you choose between walking and taking a bus?",
+      "What is the busiest time to travel near your home?",
+      "Who do you usually travel with?",
+      "What would make your daily journey easier?"
+    ],
+    "cue_card": "Describe a journey on local transport.",
+    "cue_prompts": [
+      "What it was and when it happened",
+      "Who was involved",
+      "What you did or would do",
+      "Why it matters to you"
+    ],
+    "part3_questions": [
+      "How should cities decide which transport routes to improve?",
+      "Why do people keep using private vehicles when buses are available?",
+      "Should low-income passengers receive cheaper tickets?",
+      "How might remote work affect city transport?",
+      "What responsibilities do passengers have towards each other?"
+    ],
+    "verification": {
+      "method": "structural validation plus editorial review of the generated questions against UC-03: original everyday topics; open-ended Part 1/3; related cue card; no fixed answer key",
+      "reviewer": "Codex (AI-assisted review, NOT teacher validation)",
+      "human_review": "pending before coursework submission",
+      "version": "bank-v1"
+    }
+  },
+  {
+    "item_id": "sp-community_garden",
+    "skill": "speaking",
+    "question_type": "speaking_set",
+    "topic": "community gardens",
+    "target_band": 6.0,
+    "source": "llm_generated_verified",
+    "license": "CC0-1.0",
+    "author": "Codex-assisted reference project; AI generation disclosed",
+    "created_at": "2026-10-26",
+    "part1_questions": [
+      "What plants can you see near your home?",
+      "Do you prefer spending free time indoors or outdoors?",
+      "Who looks after green spaces in your neighbourhood?",
+      "When did you last visit a park?",
+      "What would you like to grow yourself?"
+    ],
+    "cue_card": "Describe a green place you would like to improve.",
+    "cue_prompts": [
+      "What it was and when it happened",
+      "Who was involved",
+      "What you did or would do",
+      "Why it matters to you"
+    ],
+    "part3_questions": [
+      "Who should pay for shared green spaces?",
+      "Why do some neighbourhood projects lose volunteers?",
+      "How could gardens help different generations meet?",
+      "Should cities prioritise housing or parks when land is scarce?",
+      "How can residents judge whether a garden project is successful?"
+    ],
+    "verification": {
+      "method": "structural validation plus editorial review of the generated questions against UC-03: original everyday topics; open-ended Part 1/3; related cue card; no fixed answer key",
+      "reviewer": "Codex (AI-assisted review, NOT teacher validation)",
+      "human_review": "pending before coursework submission",
+      "version": "bank-v1"
+    }
+  },
+  {
+    "item_id": "sp-learning_skill",
+    "skill": "speaking",
+    "question_type": "speaking_set",
+    "topic": "learning practical skills",
+    "target_band": 6.0,
+    "source": "llm_generated_verified",
+    "license": "CC0-1.0",
+    "author": "Codex-assisted reference project; AI generation disclosed",
+    "created_at": "2026-10-26",
+    "part1_questions": [
+      "What practical task do you enjoy doing?",
+      "Who usually helps you learn something new?",
+      "When do you prefer to practise a skill?",
+      "Do you use videos to learn practical tasks?",
+      "What skill would you like to learn next?"
+    ],
+    "cue_card": "Describe a useful skill you learned outside school.",
+    "cue_prompts": [
+      "What it was and when it happened",
+      "Who was involved",
+      "What you did or would do",
+      "Why it matters to you"
+    ],
+    "part3_questions": [
+      "How does learning from a friend differ from taking a course?",
+      "Why do adults sometimes avoid learning new skills?",
+      "Should schools teach more practical subjects?",
+      "How can people assess advice found online?",
+      "Which skills might become more important in the future?"
+    ],
+    "verification": {
+      "method": "structural validation plus editorial review of the generated questions against UC-03: original everyday topics; open-ended Part 1/3; related cue card; no fixed answer key",
+      "reviewer": "Codex (AI-assisted review, NOT teacher validation)",
+      "human_review": "pending before coursework submission",
+      "version": "bank-v1"
+    }
+  },
+  {
+    "item_id": "sp-local_market",
+    "skill": "speaking",
+    "question_type": "speaking_set",
+    "topic": "local markets",
+    "target_band": 6.0,
+    "source": "llm_generated_verified",
+    "license": "CC0-1.0",
+    "author": "Codex-assisted reference project; AI generation disclosed",
+    "created_at": "2026-10-26",
+    "part1_questions": [
+      "Where do you usually buy everyday items?",
+      "What do you like about shopping near home?",
+      "Do you normally plan a shopping trip?",
+      "Who taught you how to choose good products?",
+      "When is your local shopping area busiest?"
+    ],
+    "cue_card": "Describe a place where you bought something useful.",
+    "cue_prompts": [
+      "What it was and when it happened",
+      "Who was involved",
+      "What you did or would do",
+      "Why it matters to you"
+    ],
+    "part3_questions": [
+      "How do online shops affect small local sellers?",
+      "Why do some people prefer speaking directly with sellers?",
+      "Should towns protect traditional market buildings?",
+      "How can consumers reduce waste when shopping?",
+      "What makes a marketplace welcoming to new residents?"
+    ],
+    "verification": {
+      "method": "structural validation plus editorial review of the generated questions against UC-03: original everyday topics; open-ended Part 1/3; related cue card; no fixed answer key",
+      "reviewer": "Codex (AI-assisted review, NOT teacher validation)",
+      "human_review": "pending before coursework submission",
+      "version": "bank-v1"
+    }
+  },
+  {
+    "item_id": "sp-family_meal",
+    "skill": "speaking",
+    "question_type": "speaking_set",
+    "topic": "shared meals",
+    "target_band": 6.0,
+    "source": "llm_generated_verified",
+    "license": "CC0-1.0",
+    "author": "Codex-assisted reference project; AI generation disclosed",
+    "created_at": "2026-10-26",
+    "part1_questions": [
+      "What meal do you enjoy making?",
+      "Who usually cooks where you live?",
+      "When do you have time to eat with others?",
+      "Do you enjoy trying unfamiliar ingredients?",
+      "How do you learn new recipes?"
+    ],
+    "cue_card": "Describe a meal you helped prepare for other people.",
+    "cue_prompts": [
+      "What it was and when it happened",
+      "Who was involved",
+      "What you did or would do",
+      "Why it matters to you"
+    ],
+    "part3_questions": [
+      "Why do shared meals matter to some families?",
+      "How has working life changed cooking habits?",
+      "Should schools teach basic food preparation?",
+      "What can communities do about food waste?",
+      "How might technology change home cooking?"
+    ],
+    "verification": {
+      "method": "structural validation plus editorial review of the generated questions against UC-03: original everyday topics; open-ended Part 1/3; related cue card; no fixed answer key",
+      "reviewer": "Codex (AI-assisted review, NOT teacher validation)",
+      "human_review": "pending before coursework submission",
+      "version": "bank-v1"
+    }
+  },
+  {
+    "item_id": "sp-repair_reuse",
+    "skill": "speaking",
+    "question_type": "speaking_set",
+    "topic": "repairing and reusing objects",
+    "target_band": 6.0,
+    "source": "llm_generated_verified",
+    "license": "CC0-1.0",
+    "author": "Codex-assisted reference project; AI generation disclosed",
+    "created_at": "2026-10-26",
+    "part1_questions": [
+      "What everyday object do you use most often?",
+      "Who do you ask when something stops working?",
+      "Do you keep things for a long time?",
+      "Where can people repair objects near you?",
+      "Have you ever given an old object a new use?"
+    ],
+    "cue_card": "Describe an object you repaired or wanted to repair.",
+    "cue_prompts": [
+      "What it was and when it happened",
+      "Who was involved",
+      "What you did or would do",
+      "Why it matters to you"
+    ],
+    "part3_questions": [
+      "Why do people replace items instead of repairing them?",
+      "Should manufacturers make replacement parts available?",
+      "How could repair skills be shared in a community?",
+      "Who should bear the cost of electronic waste?",
+      "Can repaired goods become more attractive to buyers?"
+    ],
+    "verification": {
+      "method": "structural validation plus editorial review of the generated questions against UC-03: original everyday topics; open-ended Part 1/3; related cue card; no fixed answer key",
+      "reviewer": "Codex (AI-assisted review, NOT teacher validation)",
+      "human_review": "pending before coursework submission",
+      "version": "bank-v1"
+    }
+  },
+  {
+    "item_id": "sp-reading_habit",
+    "skill": "speaking",
+    "question_type": "speaking_set",
+    "topic": "reading habits",
+    "target_band": 6.0,
+    "source": "llm_generated_verified",
+    "license": "CC0-1.0",
+    "author": "Codex-assisted reference project; AI generation disclosed",
+    "created_at": "2026-10-26",
+    "part1_questions": [
+      "What kind of short text do you read every day?",
+      "Where do you find things to read?",
+      "Do you prefer reading alone or discussing a text?",
+      "When do you have the most time to read?",
+      "Who recommends reading material to you?"
+    ],
+    "cue_card": "Describe something you read that changed your understanding.",
+    "cue_prompts": [
+      "What it was and when it happened",
+      "Who was involved",
+      "What you did or would do",
+      "Why it matters to you"
+    ],
+    "part3_questions": [
+      "How do people decide whether a written source is trustworthy?",
+      "Why might libraries remain useful in a digital society?",
+      "Should employers encourage reading beyond job requirements?",
+      "How does reading on a phone affect concentration?",
+      "What could help young people discover different viewpoints?"
+    ],
+    "verification": {
+      "method": "structural validation plus editorial review of the generated questions against UC-03: original everyday topics; open-ended Part 1/3; related cue card; no fixed answer key",
+      "reviewer": "Codex (AI-assisted review, NOT teacher validation)",
+      "human_review": "pending before coursework submission",
+      "version": "bank-v1"
+    }
+  },
+  {
+    "item_id": "sp-team_project",
+    "skill": "speaking",
+    "question_type": "speaking_set",
+    "topic": "team projects",
+    "target_band": 6.0,
+    "source": "llm_generated_verified",
+    "license": "CC0-1.0",
+    "author": "Codex-assisted reference project; AI generation disclosed",
+    "created_at": "2026-10-26",
+    "part1_questions": [
+      "Do you often work with other people?",
+      "What task do you prefer doing in a group?",
+      "How do you arrange a time to meet your teammates?",
+      "Who do you ask when a group task is unclear?",
+      "What do you enjoy about finishing a shared task?"
+    ],
+    "cue_card": "Describe a small project you completed with others.",
+    "cue_prompts": [
+      "What it was and when it happened",
+      "Who was involved",
+      "What you did or would do",
+      "Why it matters to you"
+    ],
+    "part3_questions": [
+      "Why do some teams struggle to share responsibility?",
+      "How should a group respond when members disagree?",
+      "Should schools assess group work individually or collectively?",
+      "How does online collaboration change trust?",
+      "What can team leaders learn from unsuccessful projects?"
+    ],
+    "verification": {
+      "method": "structural validation plus editorial review of the generated questions against UC-03: original everyday topics; open-ended Part 1/3; related cue card; no fixed answer key",
+      "reviewer": "Codex (AI-assisted review, NOT teacher validation)",
+      "human_review": "pending before coursework submission",
+      "version": "bank-v1"
+    }
+  },
+  {
+    "item_id": "sp-neighbourhood_event",
+    "skill": "speaking",
+    "question_type": "speaking_set",
+    "topic": "neighbourhood events",
+    "target_band": 6.0,
+    "source": "llm_generated_verified",
+    "license": "CC0-1.0",
+    "author": "Codex-assisted reference project; AI generation disclosed",
+    "created_at": "2026-10-26",
+    "part1_questions": [
+      "What events happen near where you live?",
+      "Who do you usually attend events with?",
+      "Do you prefer small gatherings or large events?",
+      "When did you last help organise an activity?",
+      "What makes you feel welcome at an event?"
+    ],
+    "cue_card": "Describe a small event you would organise for neighbours.",
+    "cue_prompts": [
+      "What it was and when it happened",
+      "Who was involved",
+      "What you did or would do",
+      "Why it matters to you"
+    ],
+    "part3_questions": [
+      "Who should decide which events receive public funding?",
+      "How can organisers include people who are new to an area?",
+      "Why do some local traditions continue while others disappear?",
+      "What problems can large public events create for residents?",
+      "How could communities measure an event beyond attendance?"
+    ],
+    "verification": {
+      "method": "structural validation plus editorial review of the generated questions against UC-03: original everyday topics; open-ended Part 1/3; related cue card; no fixed answer key",
+      "reviewer": "Codex (AI-assisted review, NOT teacher validation)",
+      "human_review": "pending before coursework submission",
+      "version": "bank-v1"
+    }
+  },
+  {
+    "item_id": "sp-digital_balance",
+    "skill": "speaking",
+    "question_type": "speaking_set",
+    "topic": "digital routines",
+    "target_band": 6.0,
+    "source": "llm_generated_verified",
+    "license": "CC0-1.0",
+    "author": "Codex-assisted reference project; AI generation disclosed",
+    "created_at": "2026-10-26",
+    "part1_questions": [
+      "What device do you use most often for study?",
+      "When do you usually switch off notifications?",
+      "Do you prefer handwritten or digital notes?",
+      "Who helps you solve small technology problems?",
+      "What activity do you enjoy without a screen?"
+    ],
+    "cue_card": "Describe a change you made to how you use a digital device.",
+    "cue_prompts": [
+      "What it was and when it happened",
+      "Who was involved",
+      "What you did or would do",
+      "Why it matters to you"
+    ],
+    "part3_questions": [
+      "Why is it difficult for some people to limit screen time?",
+      "Should workplaces set rules about messages outside working hours?",
+      "How can families discuss device use fairly?",
+      "Who is responsible for making digital products less distracting?",
+      "How might people maintain attention as technology changes?"
+    ],
+    "verification": {
+      "method": "structural validation plus editorial review of the generated questions against UC-03: original everyday topics; open-ended Part 1/3; related cue card; no fixed answer key",
+      "reviewer": "Codex (AI-assisted review, NOT teacher validation)",
+      "human_review": "pending before coursework submission",
+      "version": "bank-v1"
+    }
+  }
+]
